@@ -3,6 +3,8 @@ from app.db.conexion import get_db
 
 bp_producto = Blueprint("productos", __name__)
 
+error_permiso = 'Método no permitido'
+
 
 @bp_producto.route("/", methods=["GET"])
 def listar_productos():
@@ -44,7 +46,7 @@ def guardar_producto():
         cursor.close()
         return jsonify({"mensaje": "Producto creado correctamente"}), 201
     
-    return jsonify({"error": "Método no permitido"}), 405
+    return jsonify({"error": {error_permiso}}), 405
 
 @bp_producto.route("/<int:id>", methods=["PUT"])
 def actualizar_producto(id):
@@ -64,7 +66,7 @@ def actualizar_producto(id):
         
         return jsonify({"mensaje": "Producto actualizado correctamente"}), 200
     
-    return jsonify({"error": "Método no permitido"}), 405
+    return jsonify({"error": {error_permiso}}), 405
 
 @bp_producto.route("/<int:id>", methods=["DELETE"])
 def eliminar_producto(id):
