@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from app.db.conexion import get_db
 import mysql.connector
 
-bp_inventario = Blueprint("inventario", __name__)
+bp_inventario = Blueprint("inventarios", __name__)
 
 error_permiso = 'Método no permitido'
 
