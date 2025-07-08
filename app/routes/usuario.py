@@ -4,6 +4,7 @@ import mysql.connector
 
 bp_usuario = Blueprint("usuarios", __name__)
 
+
 def validar_usuario(data):
     campos = ["nombre", "id_rol", "correo", "contraseña"]
     if not data:
@@ -12,6 +13,7 @@ def validar_usuario(data):
         if campo not in data or data[campo] in (None, ""):
             return False, f"Falta el campo requerido: {campo}"
     return True, None
+
 
 @bp_usuario.route("/", methods=["GET"])
 def listar_usuarios():
@@ -26,6 +28,7 @@ def listar_usuarios():
         return jsonify({"error": f"Error de base de datos: {err}"}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @bp_usuario.route("/<int:id>", methods=["GET"])
 def listar_usuario(id):
@@ -43,6 +46,7 @@ def listar_usuario(id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @bp_usuario.route("/", methods=["POST"])
 def guardar_usuario():
     try:
@@ -55,7 +59,7 @@ def guardar_usuario():
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
             "INSERT INTO usuario (nombre, id_rol, correo, contraseña) VALUES (%s, %s, %s, %s)",
-            (data["nombre"], data["id_rol"], data["correo"], data["contraseña"])
+            (data["nombre"], data["id_rol"], data["correo"], data["contraseña"]),
         )
         conn.commit()
         cursor.close()
@@ -66,6 +70,7 @@ def guardar_usuario():
         return jsonify({"error": f"Error de base de datos: {err}"}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @bp_usuario.route("/<int:id>", methods=["PUT"])
 def actualizar_usuario(id):
@@ -79,7 +84,7 @@ def actualizar_usuario(id):
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
             "UPDATE usuario SET nombre = %s, id_rol = %s, correo = %s, contraseña = %s WHERE id_usuario = %s",
-            (data["nombre"], data["id_rol"], data["correo"], data["contraseña"], id)
+            (data["nombre"], data["id_rol"], data["correo"], data["contraseña"], id),
         )
         if cursor.rowcount == 0:
             cursor.close()
@@ -93,6 +98,7 @@ def actualizar_usuario(id):
         return jsonify({"error": f"Error de base de datos: {err}"}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @bp_usuario.route("/<int:id>", methods=["DELETE"])
 def eliminar_usuario(id):
